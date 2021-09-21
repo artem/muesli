@@ -7,7 +7,7 @@
 
 namespace muesli::archives {
 
-#ifndef NDEBUG
+#ifdef MUESLI_ARCHIVE_JSON
 
 using Writer = cereal::JSONOutputArchive;
 using Reader = cereal::JSONInputArchive;
@@ -20,7 +20,7 @@ inline std::string_view FormatName() {
   return "json";
 }
 
-#else
+#elif MUESLI_ARCHIVE_BINARY
 
 using Writer = cereal::BinaryOutputArchive;
 using Reader = cereal::BinaryInputArchive;
@@ -32,6 +32,10 @@ inline bool IsBinaryFormat() {
 inline std::string_view FormatName() {
   return "binary";
 }
+
+#else
+
+#error Muesli: Archive format not set
 
 #endif
 
