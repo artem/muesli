@@ -1,3 +1,5 @@
+#include <muesli/archives.hpp>
+
 #include <muesli/serialize.hpp>
 #include <muesli/serializable.hpp>
 
@@ -72,7 +74,19 @@ void TestTuple() {
 
 //////////////////////////////////////////////////////////////////////
 
+void Preamble() {
+  std::cout << "Archive format: "
+            << muesli::archives::FormatName() << std::endl;
+  std::cout << "IsBinaryFormat: "
+            << muesli::archives::IsBinaryFormat() << std::endl;
+
+  std::cout << std::endl;
+}
+
+//////////////////////////////////////////////////////////////////////
+
 int main() {
+  Preamble();
   TestSerialize();
   TestBytes();
   TestTuple();
