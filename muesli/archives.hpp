@@ -7,36 +7,60 @@
 
 namespace muesli::archives {
 
+//////////////////////////////////////////////////////////////////////
+
+struct BinaryArchives {
+  using Writer = cereal::BinaryOutputArchive;
+  using Reader = cereal::BinaryInputArchive;
+
+  static const bool kIsBinary = true;
+
+  static const char* FormatName() {
+    return "binary";
+  }
+};
+
+//////////////////////////////////////////////////////////////////////
+
+struct JsonArchives {
+  using Writer = cereal::JSONOutputArchive;
+  using Reader = cereal::JSONInputArchive;
+
+  static const bool kIsBinary = false;
+
+  static const char* FormatName() {
+    return "json";
+  }
+};
+
+//////////////////////////////////////////////////////////////////////
+
 #ifdef MUESLI_ARCHIVE_JSON
 
-using Writer = cereal::JSONOutputArchive;
-using Reader = cereal::JSONInputArchive;
-
-inline bool IsBinaryFormat() {
-  return false;
-}
-
-inline std::string_view FormatName() {
-  return "json";
-}
+using Archives = JsonArchives;
 
 #elif MUESLI_ARCHIVE_BINARY
 
-using Writer = cereal::BinaryOutputArchive;
-using Reader = cereal::BinaryInputArchive;
-
-inline bool IsBinaryFormat() {
-  return true;
-}
-
-inline std::string_view FormatName() {
-  return "binary";
-}
+using Archives = BinaryArchives;
 
 #else
 
-#error Muesli: Archive format not set
+// #error Muesli: Archive format not set
+using Archives = JsonArchives;
 
 #endif
+
+//////////////////////////////////////////////////////////////////////
+
+using Writer = Archives::Writer;
+using Reader = Archives::Reader;
+
+inline bool IsBinaryFormat() {
+  return Archives::kIsBinary;
+}
+
+inline std::string_view FormatName() {
+  return Archives::FormatName();
+}
 
 }  // namespace muesli::archives
