@@ -9,6 +9,7 @@ add_library(muesli
         detail/type_name.hpp
         archives.hpp
         bytes.hpp
+        empty.hpp
         serializable.hpp
         serialize.hpp
         tuple.hpp
