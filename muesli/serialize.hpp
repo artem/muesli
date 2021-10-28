@@ -3,6 +3,7 @@
 #include <muesli/detail/type_name.hpp>
 
 #include <muesli/archives.hpp>
+#include <muesli/bytes.hpp>
 
 #include <cereal/types/string.hpp>
 
@@ -44,7 +45,7 @@ void Serialize(const T& object, std::ostream& output) {
 }
 
 template <typename T>
-std::string Serialize(const T& object) {
+Bytes Serialize(const T& object) {
   std::stringstream str_output;
   Serialize(object, str_output);
   return str_output.str();
@@ -78,7 +79,7 @@ T Deserialize(std::istream& input) {
 }
 
 template <typename T>
-T Deserialize(const std::string& str) {
+T Deserialize(const Bytes& str) {
   std::stringstream str_input(str);
   return Deserialize<T>(str_input);
 }

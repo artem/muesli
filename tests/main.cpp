@@ -43,18 +43,6 @@ void TestSerialize() {
 
 //////////////////////////////////////////////////////////////////////
 
-void TestBytes() {
-  auto bytes = muesli::Bytes::Serialize(Point{3, 51});
-  auto point = bytes.As<Point>();
-
-  assert(point.x == 3);
-  assert(point.y == 51);
-
-  std::cout << "Test <Bytes>: Ok!" << std::endl;
-}
-
-//////////////////////////////////////////////////////////////////////
-
 void TestTuple() {
   auto bytes = muesli::SerializeValues<Point, std::string, Point>(
       {1, 2}, "Hi", {42, 41});
@@ -88,7 +76,6 @@ void Preamble() {
 int main() {
   Preamble();
   TestSerialize();
-  TestBytes();
   TestTuple();
   return 0;
 }
