@@ -31,6 +31,8 @@ struct Header {
 
 //////////////////////////////////////////////////////////////////////
 
+#ifndef NDEBUG
+
 template <typename T>
 void Serialize(const T& object, std::ostream& output) {
   // Prepare header
@@ -44,6 +46,16 @@ void Serialize(const T& object, std::ostream& output) {
   }
 }
 
+#else
+
+template <typename T>
+void Serialize(const T& object, std::ostream& output) {
+  archives::Writer writer(output);
+  writer(object);
+}
+
+#endif
+
 template <typename T>
 Bytes Serialize(const T& object) {
   std::stringstream str_output;
@@ -52,6 +64,8 @@ Bytes Serialize(const T& object) {
 }
 
 //////////////////////////////////////////////////////////////////////
+
+#ifndef NDEBUG
 
 template <typename T>
 T Deserialize(std::istream& input) {
@@ -77,6 +91,20 @@ T Deserialize(std::istream& input) {
 
   return object;
 }
+
+#else
+
+template <typename T>
+T Deserialize(std::istream& input) {
+  T object;
+  {
+    archives::Reader reader(input);
+    reader(object);
+  }
+  return object;
+}
+
+#endif
 
 template <typename T>
 T Deserialize(const Bytes& str) {
