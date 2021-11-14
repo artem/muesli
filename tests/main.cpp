@@ -62,6 +62,24 @@ void TestTuple() {
 
 //////////////////////////////////////////////////////////////////////
 
+enum class State {
+  UnCommitted,
+  Committed };
+
+State PackUnpack(State state) {
+  auto bytes = muesli::Serialize(state);
+  auto value = muesli::Deserialize<State>(bytes);
+  return value;
+}
+
+void TestEnumClass() {
+  assert(PackUnpack(State::Committed) == State::Committed);
+
+  std::cout << "Test <EnumClass>: Ok!" << std::endl;
+}
+
+//////////////////////////////////////////////////////////////////////
+
 void Preamble() {
   std::cout << "Archive format: "
             << muesli::archives::FormatName() << std::endl;
@@ -77,5 +95,6 @@ int main() {
   Preamble();
   TestSerialize();
   TestTuple();
+  TestEnumClass();
   return 0;
 }
