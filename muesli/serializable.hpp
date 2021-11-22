@@ -13,8 +13,11 @@
  * };
  */
 
-#define MUESLI_SERIALIZABLE(...)          \
-  template <typename Archive>             \
-  void serialize(Archive& a) {            \
-    a(MAP_LIST(CEREAL_NVP, __VA_ARGS__)); \
+#define _MUESLI_SERIALIZE_FIELD(field) \
+  a(::cereal::make_nvp(#field, this->field));
+
+#define MUESLI_SERIALIZABLE(...)               \
+  template <typename Archive>                  \
+  void serialize(Archive& a) {                 \
+    MAP(_MUESLI_SERIALIZE_FIELD, __VA_ARGS__); \
   }
